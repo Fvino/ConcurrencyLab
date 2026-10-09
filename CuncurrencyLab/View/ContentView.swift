@@ -25,6 +25,14 @@ struct ContentView: View {
                 viewModel.incrementCounter()
             }
             .buttonStyle(.borderedProminent)
+            
+            Text("Progress: \(viewModel.progress)")
+            
+            Button("Start blocking work") {
+                viewModel.startBlockWork()
+            }
+            .buttonStyle(.bordered)
+            .disabled(viewModel.isRuning)
         }
         .padding()
     }
