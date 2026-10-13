@@ -33,6 +33,12 @@ struct ContentView: View {
             }
             .buttonStyle(.bordered)
             .disabled(viewModel.isRuning)
+            
+            Button("Start background work") {
+                viewModel.startBackgroundWork()
+            }
+            .buttonStyle(.bordered)
+            .disabled(viewModel.isRuning)
         }
         .padding()
     }

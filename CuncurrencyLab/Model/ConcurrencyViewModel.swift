@@ -27,10 +27,35 @@ final class ConcurrencyViewModel {
         progress = 0
         
         for step in 1...5 {
+            print("Step: \(step)")
+            print("Main thread: \(Thread.isMainThread)")
+            
             Thread.sleep(forTimeInterval: 1)
             progress = step
         }
         
         isRuning = false
+    }
+    
+    func startBackgroundWork() {
+        guard !isRuning else { return }
+        
+        isRuning = true
+        progress = 0
+        
+        DispatchQueue.global(qos: .userInitiated).async {
+            for step in 1...5 {
+                Thread.sleep(forTimeInterval: 1)
+                
+                DispatchQueue.main.async {
+                    self.progress = step
+                }
+            }
+            
+            DispatchQueue.main.async {
+                self.isRuning = false
+            }
+            
+        }
     }
 }
