@@ -58,4 +58,25 @@ final class ConcurrencyViewModel {
             
         }
     }
+    // sync
+    func testSync() {
+        print("qqqqq start sync")
+        DispatchQueue.global().sync {
+            print("qqqqq Background START")
+            Thread.sleep(forTimeInterval: 2)
+            print("qqqqq Background END")
+        }
+        print("qqqqq END sync")
+    }
+    
+    // async
+    func testAsync() {
+        print("qqqqq START async")
+        DispatchQueue.global().async {
+            print("qqqqq Background START")
+            Thread.sleep(forTimeInterval: 2)
+            print("qqqqq Background END")
+        }
+        print("qqqqq END async")
+    }
 }

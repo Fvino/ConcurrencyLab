@@ -39,6 +39,16 @@ struct ContentView: View {
             }
             .buttonStyle(.bordered)
             .disabled(viewModel.isRuning)
+            
+            Button("Test sync") {
+                viewModel.testSync()
+            }
+            .buttonStyle(.bordered)
+            
+            Button("Test async") {
+                viewModel.testAsync()
+            }
+            .buttonStyle(.bordered)
         }
         .padding()
     }
