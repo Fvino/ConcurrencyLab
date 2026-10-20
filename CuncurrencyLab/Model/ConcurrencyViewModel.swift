@@ -79,4 +79,62 @@ final class ConcurrencyViewModel {
         }
         print("qqqqq END async")
     }
+    
+    // serial queue
+    func startSerialTasks() {
+        let queue = DispatchQueue(
+            label: "com.lab.serial"
+        )
+        
+        for index in 1...3 {
+            queue.async {
+                print("qqqqq Start serial \(index)")
+                Thread.sleep(forTimeInterval: 2)
+                print("qqqqq END serial \(index)")
+            }
+        }
+    }
+    
+    // concurrent queue
+    func startConcurrentTasks() {
+        let queue = DispatchQueue(
+            label: "com.lab.concurrent",
+            attributes: .concurrent
+        )
+        
+        for index in 1...3 {
+            queue.async {
+                print("qqqqq Start concurrent \(index)")
+                Thread.sleep(forTimeInterval: 2)
+                print("qqqqq END concurrent \(index)")
+            }
+        }
+    }
+    
+    // concurrent with group
+    func startConcurrentWithGroup() {
+        let queue = DispatchQueue(
+            label: "com.lab.concurrent",
+            attributes: .concurrent
+        )
+        
+        let group = DispatchGroup()
+        let startTime = Date()
+        
+        for index in 1...3 {
+            group.enter()
+            
+            queue.async {
+                print("qqqqq Start \(index)")
+                Thread.sleep(forTimeInterval: 2)
+                print("qqqqq End \(index)")
+                group.leave()
+            }
+        }
+        
+        group.notify(queue: .main) {
+            let elapsed = Date().timeIntervalSince(startTime)
+            print("qqqqq Total: \(elapsed) seconds")
+        }
+    }
 }

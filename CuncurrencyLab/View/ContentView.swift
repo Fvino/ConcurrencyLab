@@ -49,6 +49,21 @@ struct ContentView: View {
                 viewModel.testAsync()
             }
             .buttonStyle(.bordered)
+            
+            Button("Serial Queue") {
+                viewModel.startSerialTasks()
+            }
+            .buttonStyle(.bordered)
+            
+            Button("Concurrent Queue") {
+                viewModel.startConcurrentTasks()
+            }
+            .buttonStyle(.bordered)
+            
+            Button("Concurrent Group") {
+                viewModel.startConcurrentWithGroup()
+            }
+            .buttonStyle(.bordered)
         }
         .padding()
     }
