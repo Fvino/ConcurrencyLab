@@ -64,6 +64,21 @@ struct ContentView: View {
                 viewModel.startConcurrentWithGroup()
             }
             .buttonStyle(.bordered)
+            
+            Button("Race condition lab") {
+                viewModel.testUnsafeCounter()
+            }
+            .buttonStyle(.bordered)
+            
+            Button("Race condition safe lab") {
+                viewModel.testSafeCounter()
+            }
+            .buttonStyle(.bordered)
+            
+            Button("Serial lab") {
+                viewModel.runSerialCounter()
+            }
+            .buttonStyle(.bordered)
         }
         .padding()
     }

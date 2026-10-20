@@ -16,6 +16,8 @@ final class ConcurrencyViewModel {
     private(set) var progress = 0
     private(set) var isRuning = false
     
+    private let raceLab = RaceConditionLab()
+    
     func incrementCounter() {
         counter += 1
     }
@@ -135,6 +137,36 @@ final class ConcurrencyViewModel {
         group.notify(queue: .main) {
             let elapsed = Date().timeIntervalSince(startTime)
             print("qqqqq Total: \(elapsed) seconds")
+        }
+    }
+    
+    // unsafe
+    func testUnsafeCounter() {
+        raceLab.runUnsafeCounter()
+    }
+    
+    // safe
+    func testSafeCounter() {
+        raceLab.runSafeCounter()
+    }
+    
+    // serial
+    func runSerialCounter() {
+        let counter = SerialCounter()
+        let group = DispatchGroup()
+        
+        for _ in 0..<1000 {
+            group.enter()
+            
+            DispatchQueue.global().async {
+                counter.increment()
+                group.leave()
+            }
+        }
+        
+        group.notify(queue: .main) {
+            print("Expected: 1000")
+            print("Actual: \(counter.getValue())")
         }
     }
 }
