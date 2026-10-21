@@ -13,74 +13,85 @@ struct ContentView: View {
     
     
     var body: some View {
-        VStack(spacing: 24) {
-            Text("Concurrency Lab")
-                .font(.title)
-            
-            Text("Counter: \(viewModel.counter)")
-                .font(.title2)
-                .monospacedDigit()
-            
-            Button("+ counter") {
-                viewModel.incrementCounter()
+        ScrollView(.vertical) {
+            VStack(spacing: 24) {
+                Text("Concurrency Lab")
+                    .font(.title)
+                
+                Text("Counter: \(viewModel.counter)")
+                    .font(.title2)
+                    .monospacedDigit()
+                
+                Button("+ counter") {
+                    viewModel.incrementCounter()
+                }
+                .buttonStyle(.borderedProminent)
+                
+                Text("Progress: \(viewModel.progress)")
+                
+                Button("Start blocking work") {
+                    viewModel.startBlockWork()
+                }
+                .buttonStyle(.bordered)
+                .disabled(viewModel.isRuning)
+                
+                Button("Start background work") {
+                    viewModel.startBackgroundWork()
+                }
+                .buttonStyle(.bordered)
+                .disabled(viewModel.isRuning)
+                
+                Button("Test sync") {
+                    viewModel.testSync()
+                }
+                .buttonStyle(.bordered)
+                
+                Button("Test async") {
+                    viewModel.testAsync()
+                }
+                .buttonStyle(.bordered)
+                
+                Button("Serial Queue") {
+                    viewModel.startSerialTasks()
+                }
+                .buttonStyle(.bordered)
+                
+                Button("Concurrent Queue") {
+                    viewModel.startConcurrentTasks()
+                }
+                .buttonStyle(.bordered)
+                
+                Button("Concurrent Group") {
+                    viewModel.startConcurrentWithGroup()
+                }
+                .buttonStyle(.bordered)
+                
+                Button("Race condition lab") {
+                    viewModel.testUnsafeCounter()
+                }
+                .buttonStyle(.bordered)
+                
+                Button("Race condition safe lab") {
+                    viewModel.testSafeCounter()
+                }
+                .buttonStyle(.bordered)
+                
+                Button("Serial lab") {
+                    viewModel.runSerialCounter()
+                }
+                .buttonStyle(.bordered)
+                
+                Button("Start async work") {
+                    Task {
+                        await viewModel.startAsyncWork()
+                    }
+                }
+                .buttonStyle(.borderedProminent)
+                .disabled(viewModel.isRuning)
             }
-            .buttonStyle(.borderedProminent)
-            
-            Text("Progress: \(viewModel.progress)")
-            
-            Button("Start blocking work") {
-                viewModel.startBlockWork()
-            }
-            .buttonStyle(.bordered)
-            .disabled(viewModel.isRuning)
-            
-            Button("Start background work") {
-                viewModel.startBackgroundWork()
-            }
-            .buttonStyle(.bordered)
-            .disabled(viewModel.isRuning)
-            
-            Button("Test sync") {
-                viewModel.testSync()
-            }
-            .buttonStyle(.bordered)
-            
-            Button("Test async") {
-                viewModel.testAsync()
-            }
-            .buttonStyle(.bordered)
-            
-            Button("Serial Queue") {
-                viewModel.startSerialTasks()
-            }
-            .buttonStyle(.bordered)
-            
-            Button("Concurrent Queue") {
-                viewModel.startConcurrentTasks()
-            }
-            .buttonStyle(.bordered)
-            
-            Button("Concurrent Group") {
-                viewModel.startConcurrentWithGroup()
-            }
-            .buttonStyle(.bordered)
-            
-            Button("Race condition lab") {
-                viewModel.testUnsafeCounter()
-            }
-            .buttonStyle(.bordered)
-            
-            Button("Race condition safe lab") {
-                viewModel.testSafeCounter()
-            }
-            .buttonStyle(.bordered)
-            
-            Button("Serial lab") {
-                viewModel.runSerialCounter()
-            }
-            .buttonStyle(.bordered)
+            .padding()
         }
-        .padding()
+        .scrollIndicators(.hidden)
     }
 }
 

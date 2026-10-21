@@ -169,4 +169,26 @@ final class ConcurrencyViewModel {
             print("Actual: \(counter.getValue())")
         }
     }
+    
+    // MARK: - async/await
+    
+    func startAsyncWork() async {
+        guard !isRuning else { return }
+        
+        isRuning = true
+        progress = 0
+        
+        defer {
+            isRuning = false
+        }
+        
+        do {
+            for step in 1...5 {
+                try await Task.sleep(for: .seconds(1))
+                progress = step
+            }
+        } catch {
+            print("Task cancelled: \(error)")
+        }
+    }
 }
