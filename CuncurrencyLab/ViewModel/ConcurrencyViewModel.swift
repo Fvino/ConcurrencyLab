@@ -15,6 +15,8 @@ final class ConcurrencyViewModel {
     private(set) var counter = 0
     private(set) var progress = 0
     private(set) var isRuning = false
+    private(set) var heavyProgress = 0
+    private(set) var isHeavyRunning  = false
     
     private let raceLab = RaceConditionLab()
     
@@ -228,5 +230,29 @@ final class ConcurrencyViewModel {
     
     func cancelWork() {
         workTask?.cancel()
+    }
+    
+    // MARK: - Yield work
+    
+    func startYieldWork() async {
+        guard !isHeavyRunning else { return }
+        
+        isHeavyRunning = true
+        heavyProgress = 0
+        
+        defer {
+            isHeavyRunning = false
+        }
+        
+        for index in 1...1_000_000 {
+            if Task.isCancelled {
+                break
+            }
+            
+            if index.isMultiple(of: 10_000) {
+                heavyProgress = index
+                await Task.yield()
+            }
+        }
     }
 }

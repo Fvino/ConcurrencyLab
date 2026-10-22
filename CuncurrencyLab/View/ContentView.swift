@@ -100,6 +100,16 @@ struct ContentView: View {
                 }
                 .buttonStyle(.borderedProminent)
                 .disabled(!viewModel.isRuning)
+                
+                Text("Heavy progress: \(viewModel.heavyProgress)")
+                    .monospacedDigit()
+                
+                Button("Start yield work") {
+                    Task {
+                        await viewModel.startYieldWork()
+                    }
+                }
+//                .disabled(!viewModel.isHeavyRunning)
             }
             .padding()
         }
