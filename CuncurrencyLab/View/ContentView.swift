@@ -88,6 +88,18 @@ struct ContentView: View {
                 }
                 .buttonStyle(.borderedProminent)
                 .disabled(viewModel.isRuning)
+                
+                Button("Start cancellable work") {
+                    viewModel.startCancellableWork()
+                }
+                .buttonStyle(.borderedProminent)
+                .disabled(viewModel.isRuning)
+                
+                Button("Cancel work") {
+                    viewModel.cancelWork()
+                }
+                .buttonStyle(.borderedProminent)
+                .disabled(!viewModel.isRuning)
             }
             .padding()
         }

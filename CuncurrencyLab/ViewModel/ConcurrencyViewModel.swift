@@ -191,4 +191,42 @@ final class ConcurrencyViewModel {
             print("Task cancelled: \(error)")
         }
     }
+    
+    // MARK: - Task cancellation
+    
+    private var workTask: Task<Void, Never>?
+    
+    func startCancellableWork() {
+        guard !isRuning else { return }
+        
+        isRuning = true
+        progress = 0
+        
+        workTask = Task { [weak self] in
+            guard let self else { return }
+            
+            defer {
+                self.isRuning = false
+                self.workTask = nil
+            }
+            
+            do {
+                for step in 1...5 {
+                    try await Task.sleep(for: .seconds(1))
+                    self.progress = step
+                }
+                print("Task completed")
+                
+            } catch is CancellationError {
+                print("Task cancelled, progress: \(progress)")
+                
+            } catch {
+                print("Unexpected error: \(error)")
+            }
+        }
+    }
+    
+    func cancelWork() {
+        workTask?.cancel()
+    }
 }
